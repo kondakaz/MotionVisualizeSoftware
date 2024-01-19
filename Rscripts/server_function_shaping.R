@@ -112,54 +112,54 @@ calc.rescale.height <- function(data, button.unit=TRUE) {
 }
 
 # 読み込んだ座標をスプライン補間
-calc.spline <- function(data, sp.gam = NULL) {
-  tmp.full <- data.frame()
-  
-  for (i in 1:25) {
-    pos.name <- pos.data$V2[i] 
-    tmp <- 
-      left_join(
-        data.frame(
-          frame = c(0:max(data$frame))), 
-        data %>% 
-          filter(
-            pos==pos.name), 
-        by = "frame")
-    
-    if (nrow(na.omit(tmp))>10&nrow(distinct(tmp, x, y))>10) {
-      gam.x <-
-        gam(
-          x ~ s(frame),
-          data = tmp, sp = sp.gam)
-      tmp <- 
-        tmp %>% 
-        mutate(
-          x.est = predict(
-            gam.x, 
-            newdata = data.frame(frame = tmp$frame)))
-      
-      gam.y <- 
-        gam(
-          y ~ s(x.est) + frame, 
-          data = tmp, sp = sp.gam)
-      tmp <- 
-        tmp %>% 
-        mutate( 
-          y.est = predict(
-            gam.y, 
-            data.frame(
-              frame = tmp$frame, 
-              x.est = tmp$x.est)))
-    }
-    
-    tmp.full <- 
-      bind_rows(
-        tmp.full, tmp)
-  }
-  
-  tmp.full %>%
-    return()
-}
+# calc.spline <- function(data, sp.gam = NULL) {
+#   tmp.full <- data.frame()
+#   
+#   for (i in 1:25) {
+#     pos.name <- pos.data$V2[i] 
+#     tmp <- 
+#       left_join(
+#         data.frame(
+#           frame = c(0:max(data$frame))), 
+#         data %>% 
+#           filter(
+#             pos==pos.name), 
+#         by = "frame")
+#     
+#     if (nrow(na.omit(tmp))>10&nrow(distinct(tmp, x, y))>10) {
+#       gam.x <-
+#         gam(
+#           x ~ s(frame),
+#           data = tmp, sp = sp.gam)
+#       tmp <- 
+#         tmp %>% 
+#         mutate(
+#           x.est = predict(
+#             gam.x, 
+#             newdata = data.frame(frame = tmp$frame)))
+#       
+#       gam.y <- 
+#         gam(
+#           y ~ s(x.est) + frame, 
+#           data = tmp, sp = sp.gam)
+#       tmp <- 
+#         tmp %>% 
+#         mutate( 
+#           y.est = predict(
+#             gam.y, 
+#             data.frame(
+#               frame = tmp$frame, 
+#               x.est = tmp$x.est)))
+#     }
+#     
+#     tmp.full <- 
+#       bind_rows(
+#         tmp.full, tmp)
+#   }
+#   
+#   tmp.full %>%
+#     return()
+# }
 
 # 読み込んだデータの整形
 data.shaping <- function(data, data2, file_id, 
@@ -171,38 +171,38 @@ data.shaping <- function(data, data2, file_id,
       acc, frame, pos, ends_with(select.button.spline)) %>% 
     rename(
       x = 4, y = 5) %>% 
-    mutate(
-      x = x - mean(x, na.rm = T)) %>% 
+    # mutate(
+    #   x = x - mean(x, na.rm = T)) %>% 
     na.omit()
   
-  if (select.button.unit) {
-    tmp <- 
-      tmp %>% 
-      mutate(
-        x = x*px_to_mm.x, 
-        y = y*px_to_mm.y)
-  }
+  # if (select.button.unit) {
+  #   tmp <- 
+  #     tmp %>% 
+  #     mutate(
+  #       x = x*px_to_mm.x, 
+  #       y = y*px_to_mm.y)
+  # }
   
   if (select.button.rescale.frame) {
     tmp <- 
       calc.rescale.frame(tmp, data2)
   }
   
-  if (select.button.rescale.height) {
-    tmp <- 
-      calc.rescale.height(tmp, select.button.unit)
-  }
+  # if (select.button.rescale.height) {
+  #   tmp <- 
+  #     calc.rescale.height(tmp, select.button.unit)
+  # }
   
-  heel.max <- 
-    tmp %>% 
-    filter(
-      pos%in%c("LHeel", "RHeel")) %>% 
-    .$y %>% 
-    max(., na.rm=T)
-  
-  tmp <- tmp %>%
-    mutate(
-      y = -y + heel.max)
+  # heel.max <- 
+  #   tmp %>% 
+  #   filter(
+  #     pos%in%c("LHeel", "RHeel")) %>% 
+  #   .$y %>% 
+  #   max(., na.rm=T)
+  # 
+  # tmp <- tmp %>%
+  #   mutate(
+  #     y = -y + heel.max)
   
   tmp %>% 
     calc.momentum(., select.per_frame) %>%
@@ -222,27 +222,30 @@ make.dt <- function(data) {
       frame = c(0:max(data$frame)),
       pos = pos.data$V2, 
       acc = 0),
-    calc.spline(tmp, 0) %>% 
+    tmp %>% 
       select(
-        x.org = x.est, y.org = y.est)) %>% 
-    bind_cols(
-      calc.spline(tmp, NULL) %>% 
-        select(
-          xNULL = x.est, yNULL = y.est)) %>% 
-    bind_cols(
-      calc.spline(tmp, 0.00001) %>% 
-        select(
-          x0.00001 = x.est, y0.00001 = y.est)) %>% 
-    bind_cols(
-      calc.spline(tmp, 0.01) %>% 
-        select(
-          x0.01 = x.est, y0.01 = y.est)) %>% 
-    bind_cols(
-      calc.spline(tmp, 0.1) %>% 
-        select(
-          x0.1 = x.est, y0.1 = y.est)) %>% 
-    bind_cols(
-      calc.spline(tmp, 0.9) %>% 
-        select(
-          x0.9 = x.est, y0.9 = y.est))
+        x.org = x, y.org = y))
+    # calc.spline(tmp, 0) %>%
+    #   select(
+    #     x.org = x.est, y.org = y.est)) %>% 
+    # bind_cols(
+    #   calc.spline(tmp, NULL) %>% 
+    #     select(
+    #       xNULL = x.est, yNULL = y.est)) %>% 
+    # bind_cols(
+    #   calc.spline(tmp, 0.00001) %>% 
+    #     select(
+    #       x0.00001 = x.est, y0.00001 = y.est)) %>% 
+    # bind_cols(
+    #   calc.spline(tmp, 0.01) %>% 
+    #     select(
+    #       x0.01 = x.est, y0.01 = y.est)) %>% 
+    # bind_cols(
+    #   calc.spline(tmp, 0.1) %>% 
+    #     select(
+    #       x0.1 = x.est, y0.1 = y.est)) %>% 
+    # bind_cols(
+    #   calc.spline(tmp, 0.9) %>% 
+    #     select(
+    #       x0.9 = x.est, y0.9 = y.est))
 }

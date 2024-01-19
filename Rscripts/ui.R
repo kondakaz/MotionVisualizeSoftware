@@ -35,8 +35,11 @@ ui <- fluidPage(
       radioButtons(
         inputId = "button.unit", 
         label = "単位：", 
-        choices = c("px (測定値)"=FALSE, "mm (推定値)"=TRUE), 
-        selected = TRUE, 
+        choices = c(
+          "px (測定値)"=FALSE
+          # , "mm (推定値)"=TRUE
+          ), 
+        selected = FALSE, 
         inline = TRUE),
       radioButtons(
         inputId = "button.rescale.frame", 
@@ -47,8 +50,10 @@ ui <- fluidPage(
       radioButtons(
         inputId = "button.rescale.height", 
         label = "2ファイルの身長帯を合わせる：", 
-        choices = c("はい (約170cm)"=TRUE, "いいえ"=FALSE), 
-        selected = TRUE, 
+        choices = c(
+          # "はい (約170cm)"=TRUE, 
+          "いいえ"=FALSE), 
+        selected = FALSE, 
         inline = TRUE), 
       uiOutput("select.spline.coordinate"), 
       uiOutput("select.add.spline.curve"), 
@@ -124,7 +129,7 @@ ui <- fluidPage(
           plotlyOutput(
             outputId = "plot.momentum.compare",
             height = "250px"),
-          h3("x軸方向運動量 (マイナス方向：前方))"), 
+          h3("x軸方向運動量 (マイナス方向：前方)"), 
           plotlyOutput(
             outputId = "plot.momentum.x.compare",
             height = "250px"), 

@@ -70,16 +70,16 @@ for (file in file_list[length(file_list)]) {
   }
 }
 
-ggplot() +
-  geom_segment(
-    data = new_data %>% 
-      filter(!(x.est==0&y.est==0)) %>% 
-      mutate(
-        x.est_next = lead(x.est, default = NA), 
-        y.est_next = lead(y.est, default = NA)),
-    mapping = aes(x = x.est, y = y.est, xend = x.est_next, yend = y.est_next, color = as.character(pos))) +
-  geom_point(
-    data = new_data,
-    size = 2, alpha = 0, 
-    mapping = aes(x = x.est, y = y.est, color = as.character(pos))) +
-  scale_y_reverse()
+# ggplot() +
+#   geom_segment(
+#     data = new_data %>% 
+#       filter(!(x.est==0&y.est==0)) %>% 
+#       mutate(
+#         x.est_next = lead(x.est, default = NA), 
+#         y.est_next = lead(y.est, default = NA)),
+#     mapping = aes(x = x.est, y = y.est, xend = x.est_next, yend = y.est_next, color = as.character(pos))) +
+#   geom_point(
+#     data = new_data,
+#     size = 2, alpha = 0, 
+#     mapping = aes(x = x.est, y = y.est, color = as.character(pos))) +
+#   scale_y_reverse()

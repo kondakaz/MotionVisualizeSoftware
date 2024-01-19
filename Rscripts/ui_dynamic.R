@@ -46,8 +46,10 @@ output$select.spline.coordinate <-
     radioButtons(
       inputId = "button.spline", 
       label = "座標をスプライン補間する：", 
-      choices = c("しない"=".org", "準"="NULL", spline.level.coordinate), 
-      selected = "NULL", 
+      choices = c("しない"=".org"
+                  # , "準"="NULL", spline.level.coordinate
+                  ), 
+      selected = ".org", 
       inline = TRUE)
 })
 # 運動量・角度推移に平滑化曲線描画

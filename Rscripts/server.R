@@ -94,10 +94,6 @@ server <- function(input, output, session) {
             file = paste0("ファイル②: ", str_remove_all(input$file_id2, ".*/|.rds$|.pkl$")), 
             data2())), 
         input$plot.frame, plot.pos(), input$button.skeleton, input$button.unit)
-      # subplot(
-      #   plot.1f(data1(), input$plot.frame, plot.pos(), input$button.skeleton, input$button.unit), 
-      #   plot.1f(data2(), input$plot.frame, plot.pos(), input$button.skeleton, input$button.unit), 
-      #   margin = 0.05)
     })
   
   ### 部位別軌跡分析 ----

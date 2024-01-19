@@ -6,16 +6,16 @@ skeleton.data <- fread("Csvfiles/skeleton.csv")
 
 
 # 映像の寸法をpxからmmへ変更する縮尺
-px_to_mm.x = 667/180
-px_to_mm.y = 412/180
+# px_to_mm.x = 667/180
+# px_to_mm.y = 412/180
 
 # 単位：mm 時 1フレーム分析・軌跡分析 描画範囲
-plot.limit.x.mm <- c(-1000, 1000)
-plot.limit.y.mm <- c(-100, 2100)
+# plot.limit.x.mm <- c(-1000, 1000)
+# plot.limit.y.mm <- c(-100, 2100)
 
 # 単位：px 時 1フレーム分析・軌跡分析 描画範囲
-plot.limit.x.px <- c(-500, 500)
-plot.limit.y.px <- c(-100, 1100)
+# plot.limit.x.px <- c(-500, 500)
+# plot.limit.y.px <- c(-100, 1100)
 
 # スプライン補間程度設定
 # mgcv::gam の sp 引数 (平滑化パラメータ) を設定
